@@ -383,12 +383,15 @@ def _handle_compressed_subs(workdir, compressed_file, ext):
     """
     Uncompress 'compressed_file' in 'workdir'.
     """
+    log(u"Handle compressed: %s extension: %s workdir: %s" % (compressed_file, ext, workdir))
+
     if ext == 'rar' and kodi_major_version >= 18:
-        src = 'archive' + '://' + quote_plus(compressed_file) + '/'
+        src = 'rar' + '://' + quote_plus(compressed_file) + '/'
         (cdirs, cfiles) = xbmcvfs.listdir(src)
         for cfile in cfiles:
             fsrc = '%s%s' % (src, cfile)
             xbmcvfs.copy(fsrc, workdir + cfile)
+            log(u"Xbmcvfs.copy fsrc:%s workdir+cfile:%s" % (src, workdir + cfile))
     else:
         xbmc.executebuiltin("XBMC.Extract(%s, %s)" % (
                             compressed_file.encode("utf-8"),
